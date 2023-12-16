@@ -3,15 +3,11 @@ package com.epam.mjc.io;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.util.logging.Logger;
 
 
 public class FileReader {
-    public static void main(String[] args) {
-        FileReader fileReader = new FileReader();
-        File profileDataFile = fileReader.findDataFile("Profile.txt");
-        System.out.println(fileReader.getDataFromFile(profileDataFile));
-    }
+    private static final Logger logger = Logger.getLogger(FileReader.class.getName());
 
     public Profile getDataFromFile(File file) {
         Profile profile = new Profile();
@@ -39,20 +35,15 @@ public class FileReader {
                             profile.setAge(age);
                             break;
                         default:
-                            System.err.printf("Unknown parameter: %s\n", keyValue.getKey());
+                            logger.info("Unknown parameter: " + keyValue.getKey());
                     }
                 }
             }
         } catch (IOException e) {
-            System.err.printf("Error on file Profile.txt processing: %s\n", e.getMessage());
+            logger.info(String.format("Error on file Profile.txt processing: %s", e.getMessage()));
         }
 
         return profile;
-    }
-
-    private File findDataFile(String filename) {
-        URL url = ClassLoader.getSystemResource(filename);
-        return new File(url.getFile());
     }
 }
 
