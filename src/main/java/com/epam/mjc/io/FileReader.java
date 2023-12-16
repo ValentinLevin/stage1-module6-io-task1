@@ -10,7 +10,7 @@ public class FileReader {
     public static void main(String[] args) {
         FileReader fileReader = new FileReader();
         File profileDataFile = fileReader.findDataFile("Profile.txt");
-        Profile profile = fileReader.getDataFromFile(profileDataFile);
+        System.out.println(fileReader.getDataFromFile(profileDataFile));
     }
 
     public Profile getDataFromFile(File file) {
@@ -31,26 +31,20 @@ public class FileReader {
                             profile.setEmail(keyValue.getValue());
                             break;
                         case "phone":
-                            try {
-                                Long phone = Long.parseLong(keyValue.getValue());
-                                profile.setPhone(phone);
-                            } catch (NumberFormatException e) {
-                                profile.setPhone(null);
-                            }
+                            Long phone = Long.parseLong(keyValue.getValue());
+                            profile.setPhone(phone);
                             break;
                         case "age":
-                            try {
-                                Integer age = Integer.parseInt(keyValue.getValue());
-                                profile.setAge(age);
-                            } catch (NumberFormatException e) {
-                                profile.setAge(null);
-                            }
+                            Integer age = Integer.parseInt(keyValue.getValue());
+                            profile.setAge(age);
                             break;
+                        default:
+                            System.err.printf("Unknown parameter: %s\n", keyValue.getKey());
                     }
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.printf("Error on file Profile.txt processing: %s\n", e.getMessage());
         }
 
         return profile;
@@ -82,7 +76,7 @@ class KeyValue {
             KeyValue keyValue = new KeyValue();
 
             keyValue.key = value.substring(0, keyValueSeparatorPos).trim().toLowerCase();
-            keyValue.value = value.substring(keyValueSeparatorPos+1).trim();
+            keyValue.value = value.substring(keyValueSeparatorPos + 1).trim();
 
             return keyValue;
         } else {
